@@ -11,7 +11,10 @@
     "dev:web": "npm run dev --workspace=web",
     "dev:api": "npm run start:dev --workspace=api",
     "dev:api:run": "npm run build --workspace=api && node apps/api/dist/main.js",
-    "build": "npm run build --workspace=web && npm run build --workspace=api",
+    "postinstall": "node scripts/patch-swc-lockfile.mjs",
+    "build": "npm run build:web && npm run build:api",
+    "build:web": "node scripts/build-web.mjs",
+    "build:api": "npm run build --prefix apps/api",
     "lint": "npm run lint --workspace=web && npm run lint --workspace=api",
     "prisma:generate": "npm run prisma:generate --workspace=api",
     "docker:up": "docker compose up -d",
@@ -26,6 +29,9 @@
   },
   "engines": {
     "node": ">=20"
+  },
+  "optionalDependencies": {
+    "@next/swc-win32-x64-msvc": "16.2.6"
   },
   "devDependencies": {
     "concurrently": "^9.1.2",
