@@ -1,8 +1,12 @@
 # Dependencies
 node_modules/
 
-# Env
+# Env (never commit secrets)
 .env
+**/.env
+!.env.example
+!**/.env.example
+!**/.env.production.example
 .env.*.local
 .env.deploy
 .peblo-pgdata

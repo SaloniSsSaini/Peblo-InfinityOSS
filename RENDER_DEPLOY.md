@@ -89,4 +89,4 @@ npm run build:api
 | `Can't reach database` | Use **External** URL locally; **Internal** URL only from Render services |
 | Prisma migrate fails on Neon pooler | Run migrate with **direct** connection string |
 | CORS blocked | `WEB_ORIGIN` must match Vercel URL exactly (no trailing slash) |
-| Placeholder DB host | Replace `your-db-host.render.com` with real URL from dashboard |
+| Invalid / placeholder `DATABASE_URL` | Use External URL from Render → database → Connect (no fake hosts in repo) |

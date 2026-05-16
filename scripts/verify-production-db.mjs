@@ -36,15 +36,24 @@ function run(cmd, args, env) {
 const env = loadEnv();
 const url = env.DATABASE_URL ?? '';
 
-if (!url || url.includes('REPLACE_') || url.includes('your-db-host')) {
+const PLACEHOLDER_MARKERS = [
+  'REPLACE_',
+  'your-db-host',
+  'YourPassword',
+  'yourdbname',
+  'USER:PASSWORD@HOST',
+  '@HOST:5432',
+];
+
+if (!url || PLACEHOLDER_MARKERS.some((m) => url.includes(m))) {
   console.error(`
-DATABASE_URL is still a placeholder.
+DATABASE_URL is missing or still a placeholder.
 
 1. Deploy render.yaml (Render Blueprint) OR create Neon/Supabase Postgres.
-2. Copy the External connection string into apps/api/.env → DATABASE_URL
+2. Set DATABASE_URL in Render Dashboard (production) OR paste External URL into apps/api/.env (local only, gitignored).
 3. Re-run: node scripts/verify-production-db.mjs
 
-See RENDER_DEPLOY.md
+See RENDER_DEPLOY.md and apps/api/.env.production.example
 `);
   process.exit(1);
 }

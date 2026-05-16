@@ -91,10 +91,15 @@ async function main() {
     /* ignore */
   }
   if (!existing.includes(String(pgPort))) {
-    fs.writeFileSync(
-      envPath,
-      `# Auto-updated by scripts/start-dev.mjs\nPORT=4000\nWEB_ORIGIN=http://localhost:3000\nDATABASE_URL=${databaseUrl}\nJWT_ACCESS_SECRET=dev-access-secret\nJWT_REFRESH_SECRET=dev-refresh-secret\nDEMO_EMAIL=demo@peblo.infinityos.app\nDEMO_PASSWORD=DemoInfinity2026!\nDEMO_NAME=Demo visitor\nOPENAI_API_KEY=\n`,
-    );
+    const devTemplate = `# Auto-updated by scripts/start-dev.mjs\nPORT=4000\nWEB_ORIGIN=http://localhost:3000\nDATABASE_URL=${databaseUrl}\nJWT_ACCESS_SECRET=dev-access-secret\nJWT_REFRESH_SECRET=dev-refresh-secret\nDEMO_EMAIL=demo@peblo.infinityos.app\nDEMO_PASSWORD=DemoInfinity2026!\nDEMO_NAME=Demo visitor\nOPENAI_API_KEY=\n`;
+    if (!existing.trim() || existing.includes('NODE_ENV=production')) {
+      const lines = existing.trim() ? existing.split(/\r?\n/) : [];
+      const withoutDb = lines.filter((l) => !l.trim().startsWith('DATABASE_URL='));
+      withoutDb.push(`DATABASE_URL=${databaseUrl}`);
+      fs.writeFileSync(envPath, `${withoutDb.join('\n')}\n`);
+    } else {
+      fs.writeFileSync(envPath, devTemplate);
+    }
   }
 
   console.log('\n==> Starting API + Web');
