@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Env
+.env
+.env.*.local
+.env.deploy
+.peblo-pgdata
+
+# Next.js
+apps/web/.next/
+apps/web/out/
+
+# NestJS
+apps/api/dist/
+apps/api/coverage/
+
+# Prisma / GraphQL artifacts
+apps/api/src/schema.gql
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/

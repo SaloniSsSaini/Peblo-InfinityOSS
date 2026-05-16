@@ -1,0 +1,34 @@
+{
+  "name": "peblo-infinityos",
+  "private": true,
+  "workspaces": [
+    "apps/web",
+    "apps/api"
+  ],
+  "scripts": {
+    "dev": "concurrently -n web,api -c cyan,magenta \"npm run dev:web\" \"npm run dev:api\"",
+    "dev:all": "node scripts/start-dev.mjs",
+    "dev:web": "npm run dev --workspace=web",
+    "dev:api": "npm run start:dev --workspace=api",
+    "dev:api:run": "npm run build --workspace=api && node apps/api/dist/main.js",
+    "build": "npm run build --workspace=web && npm run build --workspace=api",
+    "lint": "npm run lint --workspace=web && npm run lint --workspace=api",
+    "prisma:generate": "npm run prisma:generate --workspace=api",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "db:migrate": "npm exec prisma --workspace=api -- migrate deploy",
+    "db:seed": "npm run prisma:seed --workspace=api",
+    "setup": "npm install && npm run docker:up && npm run db:migrate && npm run db:seed",
+    "setup:win": "powershell -ExecutionPolicy Bypass -File scripts/setup.ps1",
+    "setup:b": "powershell -ExecutionPolicy Bypass -File scripts/setup-option-b.ps1",
+    "deploy": "powershell -ExecutionPolicy Bypass -File scripts/deploy.ps1",
+    "deploy:down": "docker compose -f docker-compose.prod.yml --env-file .env.deploy down"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "embedded-postgres": "^18.3.0-beta.17"
+  }
+}

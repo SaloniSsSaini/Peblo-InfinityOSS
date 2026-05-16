@@ -1,0 +1,14 @@
+node_modules
+**/node_modules
+apps/web/.next
+apps/api/dist
+.git
+.cursor
+**/*.log
+.env
+.env.*
+!.env.deploy.example
+apps/web/.env.local
+apps/api/.env
+terminals
+agent-transcripts
