@@ -2,6 +2,22 @@
 
 **Positioning:** An AI-powered operating system for learning, productivity, startups, collaboration, and creator economies—implemented as a **TypeScript monorepo** (Next.js + NestJS + PostgreSQL).
 
+## Live URLs (production)
+
+| Variable | Value |
+| --- | --- |
+| **PROJECT_URL** | https://peblo-infinity-oss-web.vercel.app |
+| **WEB_ORIGIN** | https://peblo-infinity-oss-web.vercel.app |
+
+- **App (Vercel):** [https://peblo-infinity-oss-web.vercel.app](https://peblo-infinity-oss-web.vercel.app)
+- **Demo login:** `demo@peblo.infinityos.app` / `DemoInfinity2026!` (portfolio demo mode — no backend required on Vercel)
+
+Set on API (Render) when using full stack:
+
+```env
+WEB_ORIGIN=https://peblo-infinity-oss-web.vercel.app
+```
+
 **Roadmap framing:** Foundation → Notes → AI → Productivity → Collaboration → Learning → Marketplace → Startup tools → Enterprise scale.
 
 ### Product vision (non-technical)
@@ -277,7 +293,7 @@ apps/api/prisma/
 
 | App | Suggested host | Notes |
 | --- | --- | --- |
-| `apps/web` | Vercel | Set `NEXT_PUBLIC_API_URL` to the public API URL. |
+| `apps/web` | [Vercel — peblo-infinity-oss-web](https://peblo-infinity-oss-web.vercel.app) | `NEXT_PUBLIC_DEMO_MODE=1` for frontend-only demo; or `NEXT_PUBLIC_API_URL` + `WEB_ORIGIN=https://peblo-infinity-oss-web.vercel.app` for full stack. |
 | `apps/api` | Railway / Render / Fly | `DATABASE_URL`, JWT secrets, `WEB_ORIGIN`, optional `OPENAI_API_KEY` for live AI. Release: `prisma migrate deploy`, `prisma generate`, then `prisma db seed` once (or per policy). |
 | Postgres / Redis | Managed or Docker | Match connection strings to Prisma. |
 
