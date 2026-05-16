@@ -25,7 +25,8 @@
     "setup:win": "powershell -ExecutionPolicy Bypass -File scripts/setup.ps1",
     "setup:b": "powershell -ExecutionPolicy Bypass -File scripts/setup-option-b.ps1",
     "deploy": "powershell -ExecutionPolicy Bypass -File scripts/deploy.ps1",
-    "deploy:down": "docker compose -f docker-compose.prod.yml --env-file .env.deploy down"
+    "deploy:down": "docker compose -f docker-compose.prod.yml --env-file .env.deploy down",
+    "db:verify-prod": "node scripts/verify-production-db.mjs"
   },
   "engines": {
     "node": ">=20"

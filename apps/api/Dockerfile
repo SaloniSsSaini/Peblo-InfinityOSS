@@ -20,5 +20,5 @@ COPY --from=build /app/apps/api ./apps/api
 COPY apps/api/docker-entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 WORKDIR /app/apps/api
-EXPOSE 4000
+EXPOSE 10000
 ENTRYPOINT ["/entrypoint.sh"]

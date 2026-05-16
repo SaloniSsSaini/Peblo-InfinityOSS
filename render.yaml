@@ -1,0 +1,49 @@
+# Render Blueprint — Peblo InfinityOS API + PostgreSQL
+# Deploy: https://dashboard.render.com/blueprints → New Blueprint Instance → connect repo
+# Web (Vercel): https://peblo-infinity-oss-web.vercel.app
+
+databases:
+  - name: peblo-infinityos-db
+    databaseName: peblo_infinityos
+    user: peblo
+    plan: free
+    ipAllowList: []
+
+services:
+  - type: web
+    name: peblo-infinityos-api
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: WEB_ORIGIN
+        value: https://peblo-infinity-oss-web.vercel.app
+      - key: DATABASE_URL
+        fromDatabase:
+          name: peblo-infinityos-db
+          property: connectionString
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: JWT_ACCESS_EXPIRES
+        value: 15m
+      - key: JWT_REFRESH_EXPIRES
+        value: 7d
+      - key: DEMO_EMAIL
+        value: demo@peblo.infinityos.app
+      - key: DEMO_PASSWORD
+        value: DemoInfinity2026!
+      - key: DEMO_NAME
+        value: Demo visitor
+      - key: RUN_DB_SEED
+        value: "1"
+      # Optional — set in Render dashboard after deploy:
+      # OPENAI_API_KEY, RESEND_API_KEY, MAIL_FROM, REDIS_URL
