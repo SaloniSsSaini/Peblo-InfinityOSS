@@ -5,11 +5,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { apiUrl } from "@/lib/api";
 import { readApiError } from "@/lib/api-client";
+import { createDemoSession, isValidDemoCredentials } from "@/lib/demo-auth";
 import {
   DEMO_EMAIL,
   DEMO_PASSWORD,
   isDemoLoginUiEnabled,
 } from "@/lib/demo-credentials";
+import { isDemoMode } from "@/lib/demo-mode";
 import { useAuthStore } from "@/stores/auth-store";
 import { Button } from "@/components/ui/button";
 import {
@@ -45,6 +47,14 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
 
   async function completeLogin(payload: { email: string; password: string }) {
+    if (isDemoMode()) {
+      if (!isValidDemoCredentials(payload.email, payload.password)) {
+        return "Invalid credentials. Use the demo account shown below.";
+      }
+      setSession(createDemoSession());
+      router.push("/dashboard");
+      return null;
+    }
     const res = await fetch(apiUrl("/auth/login"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -107,7 +117,11 @@ function LoginForm() {
     <Card className="w-full max-w-md border-white/15 bg-white/10 shadow-2xl backdrop-blur-xl dark:bg-black/40">
       <CardHeader>
         <CardTitle className="text-xl">Sign in</CardTitle>
-        <CardDescription>Peblo InfinityOS — production-ready stack.</CardDescription>
+        <CardDescription>
+          {isDemoMode()
+            ? "Portfolio live demo — runs in your browser, no backend required."
+            : "Peblo InfinityOS — production-ready stack."}
+        </CardDescription>
       </CardHeader>
       <form onSubmit={onSubmit}>
         <CardContent className="space-y-4">
@@ -141,8 +155,14 @@ function LoginForm() {
                 </Button>
               </div>
               <p className="mt-2 text-[11px] text-emerald-100/70">
-                Tip: <span className="font-mono">/auth/login?demo=1</span> pre-fills this form (after DB seed). Use{" "}
-                <strong>Sign in as demo</strong> to continue.
+                {isDemoMode()
+                  ? "No database or API — credentials are checked locally. Click Sign in as demo."
+                  : (
+                    <>
+                      Tip: <span className="font-mono">/auth/login?demo=1</span> pre-fills this form. Use{" "}
+                      <strong>Sign in as demo</strong> to continue.
+                    </>
+                  )}
               </p>
             </div>
           )}
@@ -193,12 +213,14 @@ function LoginForm() {
               Forgot password?
             </Link>
           </p>
-          <p className="text-center text-xs text-muted-foreground">
-            No account?{" "}
-            <Link href="/auth/register" className="text-violet-300 hover:underline">
-              Register
-            </Link>
-          </p>
+          {!isDemoMode() ? (
+            <p className="text-center text-xs text-muted-foreground">
+              No account?{" "}
+              <Link href="/auth/register" className="text-violet-300 hover:underline">
+                Register
+              </Link>
+            </p>
+          ) : null}
           <Link href="/" className="text-center text-xs text-muted-foreground hover:text-foreground">
             ← Back to home
           </Link>

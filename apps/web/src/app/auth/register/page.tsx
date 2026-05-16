@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { apiUrl } from "@/lib/api";
 import { readApiError } from "@/lib/api-client";
+import { isDemoMode } from "@/lib/demo-mode";
+import { DEMO_EMAIL } from "@/lib/demo-credentials";
 import { useAuthStore } from "@/stores/auth-store";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,6 +30,12 @@ export default function RegisterPage() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    if (isDemoMode()) {
+      setError(
+        `Registration is disabled in portfolio demo mode. Sign in with ${DEMO_EMAIL} on the login page.`,
+      );
+      return;
+    }
     setLoading(true);
     try {
       const res = await fetch(apiUrl("/auth/register"), {

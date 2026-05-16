@@ -95,7 +95,9 @@ export default function DashboardPage() {
         >
           <h1 className="text-2xl font-semibold tracking-tight">Overview</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Live workspace metrics from notes and tasks.{" "}
+            {process.env.NEXT_PUBLIC_DEMO_MODE !== "0"
+              ? "Live demo metrics from your browser workspace."
+              : "Live workspace metrics from notes and tasks."}{" "}
             {insights?.generatedAt
               ? `Updated ${new Date(insights.generatedAt).toLocaleString()}.`
               : null}

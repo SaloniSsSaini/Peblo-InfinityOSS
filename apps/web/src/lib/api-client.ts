@@ -1,7 +1,13 @@
 import { apiUrl } from "./api";
+import { isDemoMode } from "./demo-mode";
+import { handleMockApi } from "./mock-api";
 import { useAuthStore } from "@/stores/auth-store";
 
 export async function apiFetch(path: string, init: RequestInit = {}) {
+  if (isDemoMode()) {
+    return handleMockApi(path.replace(/^\/?api\/?/, "").replace(/^\//, ""), init);
+  }
+
   const token = useAuthStore.getState().accessToken;
   const headers = new Headers(init.headers);
   if (token) {

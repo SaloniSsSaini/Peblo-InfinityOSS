@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { apiUrl } from "@/lib/api";
 import { readApiError } from "@/lib/api-client";
+import { isDemoMode } from "@/lib/demo-mode";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,6 +27,12 @@ export default function ForgotPasswordPage() {
     setError(null);
     setMessage(null);
     setDevResetUrl(null);
+    if (isDemoMode()) {
+      setMessage(
+        "Password reset is not available in portfolio demo mode. Use the demo login on the sign-in page.",
+      );
+      return;
+    }
     setLoading(true);
     try {
       const res = await fetch(apiUrl("/auth/forgot-password"), {

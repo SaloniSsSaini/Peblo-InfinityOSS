@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { apiUrl } from "@/lib/api";
 import { readApiError } from "@/lib/api-client";
+import { isDemoMode } from "@/lib/demo-mode";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -35,6 +36,10 @@ function ResetPasswordForm() {
     }
     if (password.length < 8) {
       setError("Password must be at least 8 characters");
+      return;
+    }
+    if (isDemoMode()) {
+      setError("Password reset is disabled in portfolio demo mode.");
       return;
     }
     setLoading(true);

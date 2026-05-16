@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AtmosphereBackground } from "@/components/atmosphere-background";
+import { DemoModeBanner } from "@/components/demo-mode-banner";
 import { GlobalSearch } from "@/components/global-search";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
@@ -162,6 +163,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
             </Link>
           </div>
         </header>
+        <DemoModeBanner />
         {children}
       </div>
       <GlobalSearch open={searchOpen} onOpenChange={setSearchOpen} />
